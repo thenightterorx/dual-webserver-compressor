@@ -1,2 +1,4 @@
+import socket
+import tqdm
 import os
-import time
+
