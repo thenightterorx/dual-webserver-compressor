@@ -630,7 +630,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         '.xz': 'application/x-xz',
     }
 
-    def __init__(self, *args, directory="/home/lee/servercache", **kwargs):
+    def __init__(self, *args, directory=None, **kwargs):
         if directory is None:
             directory = os.getcwd()
         self.directory = os.fspath(directory)
@@ -639,6 +639,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         """Serve a GET request."""
         f = self.send_head()
+        print(f)
         if f:
             try:
                 self.copyfile(f, self.wfile)
@@ -649,9 +650,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Serve a HEAD request."""
         f = self.send_head()
         if f:
+            print("AAAA")
             f.close()
 
     def send_head(self):
+        print("BBBBBBB")
         """Common code for GET and HEAD commands.
 
         This sends the response code and MIME headers.
