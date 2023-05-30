@@ -4,6 +4,7 @@ const execSync = require('child_process').execSync;
 const fs = require('fs').promises;
 const host = '0.0.0.0';
 const port = 8000;
+const shelljs = require('shelljs');
 
 exec("mkdir /home/lee/hello");
 
@@ -45,10 +46,23 @@ const requestListener = function (req, res) {
   var fixedwanted=wanted.replace("/","\\/")
   
   //this is a nightmare
-  execSync("sed -i \'s/https:\\/\\//localhost:8000/g\' "               +    "/home/"+process.env.USER+"/servercache/"+wanted);
-  execSync("sed -i \'s/href=\"\//localhost:8000\/"+fixedwanted+"/g\' "  +    "/home/"+process.env.USER+"/servercache/"+wanted);
+  //execSync("sed -i \'s/https:\\/\\//localhost:8000/g\' "               +    "/home/"+process.env.USER+"/servercache/"+wanted);
+  //execSync("sed -i \'s/href=\"\//localhost:8000\/"+fixedwanted+"/g\' "  +    "/home/"+process.env.USER+"/servercache/"+wanted);
 
+  wantedlist=wanted.split("/");
 
+  prevpath="";
+
+  for(let i=0;i<wantedlist.length-1;i++){
+    prevpath=prevpath+wantedlist[i]+"/"
+  }
+
+  try{
+    shelljs.sed('-i', 'https://',"localhost:8002/", "/home/"+process.env.USER+"/servercache/"+wanted);
+    shelljs.sed('-i', "href=\"","href=\"/"+prevpath, "/home/"+process.env.USER+"/servercache/"+wanted);
+  }catch(e){
+    console.log("/home/"+process.env.USER+"/servercache/"+wanted+" probably doesnt exist");
+  }
 
   sziperror = execSync("7z a /home/"+process.env.USER+"/servercache/"+wanted+".7z /home/"+process.env.USER+"/servercache/"+wanted );
   filePath="/home/"+process.env.USER+"/servercache/"+wanted+".7z"
