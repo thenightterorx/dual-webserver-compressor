@@ -63,8 +63,9 @@ const requestListener = function (req, res) {
   }
 
   try{
-    shelljs.sed('-i', 'https://',"localhost:8002/", "/home/"+process.env.USER+"/servercache/"+wanted);
-    shelljs.sed('-i', "href=\"","href=\"/"+prevpath, "/home/"+process.env.USER+"/servercache/"+wanted);
+    firstreplace=shelljs.sed('-i', 'https://',"localhost:8002/", "/home/"+process.env.USER+"/servercache/"+wanted);
+    secondreplace=shelljs.sed('-i', "href=\"/","href=\"/"+prevpath, "/home/"+process.env.USER+"/servercache/"+wanted);
+    console.log("sed command fail is" +firstreplace + " and "+ secondreplace);
   }catch(e){
     console.log("/home/"+process.env.USER+"/servercache/"+wanted+" probably doesnt exist");
   }
