@@ -10,7 +10,7 @@ var serverip = "localhost:8000";
 
 const requestListener = function (req, res) {
   //res.writeHead(200);
-  
+  console.log("connection to local server got!"); 
   
   console.log(req.url);
 
@@ -24,7 +24,7 @@ const requestListener = function (req, res) {
 
   wantedlist=wanted.split("/");
   
-
+/*
   try{
     //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/localcache/"+arguments[0]);
     directory = "/home/"+process.env.USER+"/localcache/"+wanted;
@@ -37,7 +37,7 @@ const requestListener = function (req, res) {
     
     
   }
-
+*/
   //rmerr = execSync("rm -rf /home/"+process.env.USER+"/localcache/"+wanted);
   //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/localcache/"+wanted);
   
@@ -46,7 +46,9 @@ const requestListener = function (req, res) {
   try{
     console.log("checker b");
     filePath="/home/"+process.env.USER+"/localcache/"+wanted;
-    var teststuff=execSync("cat "+filepath);
+    console.log(filePath);
+    var teststuff=execSync("cat "+filePath+ " > /dev/null");
+
     fs.readFile(filePath).then(contents => {
       console.log("sending: "+filePath);
       
@@ -55,6 +57,20 @@ const requestListener = function (req, res) {
     })
 
   }catch(error){
+    
+try{
+    //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/localcache/"+arguments[0]);
+    directory = "/home/"+process.env.USER+"/localcache/"+wanted;
+    createcommand= ("mkdir -p \"$(dirname \"" + directory + "\")\" && touch \"" + directory + "\"");
+    console.log(createcommand);
+    execSync(createcommand);
+
+  }catch(error){
+    console.log("cant create directory");  
+    
+    
+  }
+
     console.log("checker c");
     try{
       console.log("checker d");
@@ -73,9 +89,26 @@ const requestListener = function (req, res) {
       console.log("movecommand error: "+movecommand);
       console.log("checker y");
       filePath="/home/"+process.env.USER+"/localcache/"+wanted;
-      console.log(filePath);
+      
+prevpath="";
+
+  for(let i=0;i<wantedlist.length-1;i++){
+    prevpath=prevpath+wantedlist[i]+"/"
+  }
+      
       try{
-        execSync("cat "+filepath);
+        console.log("trying to fix the / for the second time geez");
+        //secondreplace=shelljs.sed('-i', 'href="','href='+prevpath, filePath);
+      }catch(sus){
+        console.log(secondreplace);
+      }
+      console.log("the program progressed after / replacement");
+      //console.log(secondreplace);
+      console.log(filePath);
+
+      try{
+        console.log("Trying to cat the file to see if it actually exists lol");
+        //caterror=execSync("cat "+filePath);
       }catch (e){
         console.log("amogus"); 
         filePath="/home/"+process.env.USER+"/localcache/"+wanted;
@@ -83,6 +116,8 @@ const requestListener = function (req, res) {
         
        
       }
+      try{
+      console.log("woohoo trying to send full send it yeah (I am not affiliated)");
       fs.readFile(filePath).then(contents => {
       console.log("sending: "+filePath);
       
@@ -90,6 +125,11 @@ const requestListener = function (req, res) {
       res.end(contents);
       console.log("checker z");
     })
+      }catch(thingbad){
+        console.log("cant send very bad");
+        res.writeHead(404);
+        res.end("Resource not found");
+      }
 
 
     }catch(err){

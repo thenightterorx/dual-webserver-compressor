@@ -10,7 +10,8 @@ exec("mkdir /home/lee/hello");
 
 const requestListener = function (req, res) {
   //res.writeHead(200);
-  
+  console.log("connection to remote server got!");
+
   res.setHeader("Content-Type", "application/x-7z-compressed");
   console.log(req.url);
   rawanted=req.url;
@@ -45,7 +46,10 @@ const requestListener = function (req, res) {
     console.log(oldwanted);
     wgeterr = execSync("wget -O /home/"+process.env.USER+"/servercache/"+wanted+" "+oldwanted);
   }catch(error){
+    //from digitalocean node.js fileserver tutorial
     console.log("wget does not work");
+    res.writeHead(404);
+    res.end("Resource not found");
   }
 
   var fixedwanted=wanted.replace("/","\\/")
@@ -63,9 +67,20 @@ const requestListener = function (req, res) {
   }
 
   try{
+    console.log(wanted);
+secondreplace=shelljs.sed('-i', '=\"\/','="localhost:8002/'+wantedlist[0]+"/", "/home/"+process.env.USER+"/servercache/"+wanted);
+
+
     firstreplace=shelljs.sed('-i', 'https://',"localhost:8002/", "/home/"+process.env.USER+"/servercache/"+wanted);
-    secondreplace=shelljs.sed('-i', "href=\"/","href=\"/"+prevpath, "/home/"+process.env.USER+"/servercache/"+wanted);
-    console.log("sed command fail is" +firstreplace + " and "+ secondreplace);
+    console.log("first sed command succeeded");
+    //replace / href (on website)
+    console.log(prevpath);
+    console.log("the main website is "+wantedlist[0]);
+
+    //secondreplace=shelljs.sed('-i', '="/','="/localhost:8002/'+wantedlist[0]+"/", "/home/"+process.env.USER+"/servercache/"+wanted);
+
+    console.log("second sed command succeeded");
+    //console.log("sed command fail is" +firstreplace + " and "+ secondreplace);
   }catch(e){
     console.log("/home/"+process.env.USER+"/servercache/"+wanted+" probably doesnt exist");
   }
