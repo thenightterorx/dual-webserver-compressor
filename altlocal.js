@@ -15,6 +15,7 @@ const requestListener = function (req, res) {
 
   rawanted=req.url;
   wanted=rawanted.slice(1);
+  oldwanted=rawanted.slice(1);
   
   if(wanted.charAt(wanted.length-1)=="/"){
     wanted=wanted+"index.html";
@@ -56,13 +57,16 @@ const requestListener = function (req, res) {
     console.log("checker c");
     try{
       console.log("checker d");
-      var command=("wget -O /home/"+process.env.USER+"/localcache/"+wanted+".7z "+serverip+"/"+wanted)
+      var command=("wget -O /home/"+process.env.USER+"/localcache/"+wanted+".7z "+serverip+"/"+oldwanted);
       console.log(command);
       wgeterr = execSync(command);
       
-      decommand=("7z x /home/"+process.env.USER+"/localcache/"+wanted+".7z -o"+"/home/"+process.env.USER+"/servercache/"+wanted); 
+      console.log("checker x");
+
+      decommand=("7z x /home/"+process.env.USER+"/localcache/"+wanted+".7z -o"+"/home/"+process.env.USER+"/localcache/"+wanted); 
       console.log(decommand);
       decompress=execSync(decommand);
+      console.log("checker y");
       filePath="/home/"+process.env.USER+"/localcache/"+wanted;
       console.log(filePath);
       try{
@@ -79,6 +83,7 @@ const requestListener = function (req, res) {
       
       res.writeHead(200);
       res.end(contents);
+      console.log("checker z");
     })
 
 

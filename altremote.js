@@ -14,8 +14,12 @@ const requestListener = function (req, res) {
   res.setHeader("Content-Type", "application/x-7z-compressed");
   console.log(req.url);
   rawanted=req.url;
+  rawoldwanted=req.url;
+
+  //idk why but these have to be separate or it breaks
   wanted=rawanted.slice(1);
-  oldwanted=wanted;
+  oldwanted=rawoldwanted.slice(1);
+
   if (wanted.charAt(wanted.length-1)=="/"){
     wanted=wanted+"index.html"
   }
@@ -38,9 +42,10 @@ const requestListener = function (req, res) {
   //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/servercache/"+wanted);
   
   try{
-    wgeterr = execSync("wget -P /home/"+process.env.USER+"/servercache/"+wanted+" "+oldwanted);
+    console.log(oldwanted);
+    wgeterr = execSync("wget -O /home/"+process.env.USER+"/servercache/"+wanted+" "+oldwanted);
   }catch(error){
-    console.log("uhh no work");
+    console.log("wget does not work");
   }
 
   var fixedwanted=wanted.replace("/","\\/")
@@ -63,8 +68,9 @@ const requestListener = function (req, res) {
   }catch(e){
     console.log("/home/"+process.env.USER+"/servercache/"+wanted+" probably doesnt exist");
   }
-
-  sziperror = execSync("7z a /home/"+process.env.USER+"/servercache/"+wanted+".7z /home/"+process.env.USER+"/servercache/"+wanted );
+  zipcommand=("7z a /home/"+process.env.USER+"/servercache/"+wanted+".7z /home/"+process.env.USER+"/servercache/"+wanted );
+  console.log(zipcommand);
+  sziperror = execSync(zipcommand);
   filePath="/home/"+process.env.USER+"/servercache/"+wanted+".7z"
   console.log(filePath);
   /*
