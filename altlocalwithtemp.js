@@ -69,8 +69,8 @@ const requestListener = function (req, res) {
       decompress=execSync(decommand);
 
       //move from temp folder to cache
-      shelljs.mv("/home/"+process.env.USER+"/localtemp/"+wanted+'/'+wanted, "/home/"+process.env.USER+"/localcache/"+wanted);
-
+      movecommand=shelljs.mv("/home/"+process.env.USER+"/localtemp/"+wanted+'/'+wantedlist[wantedlist.length-1], "/home/"+process.env.USER+"/localcache/"+wanted);
+      console.log("movecommand error: "+movecommand);
       console.log("checker y");
       filePath="/home/"+process.env.USER+"/localcache/"+wanted;
       console.log(filePath);
