@@ -33,7 +33,7 @@ const requestListener = function (req, res) {
     rmerr = execSync("rm -rf /home/"+process.env.USER+"/servercache/"+wanted+".7z");
   }
 
-  //rmerr = execSync("rm -rf /home/"+process.env.USER+"/servercache/"+wanted);
+  //rmerr = execSync("rm -rf /home/+process.env.USER+"/servercache/"+wanted);
   //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/servercache/"+wanted);
   
   try{
