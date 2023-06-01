@@ -25,7 +25,7 @@ const requestListener = function (req, res) {
   
 
   try{
-    //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/localcache/"+arguments[0]);
+    //mkdirerr = execSync("mkdir /home/"+process.env.USER+"/loclcache/"+arguments[0]);
     directory = "/home/"+process.env.USER+"/localcache/"+wanted;
     createcommand= ("mkdir -p \"$(dirname \"" + directory + "\")\" && touch \"" + directory + "\"");
     console.log(createcommand);
